@@ -17,7 +17,7 @@
       service: name=httpd enabled=yes state=restarted
 
     - name: copy site file over
-      template: src=./Packages/index.html dest=/var/www/html/index.html
+      template: src=./index.html dest=/var/www/html/index.html
 
     - name: copy ssh private key to private subnet Instances 
-      template: src=./Packages/id_rsa dest=~/.ssh
+      template: src=./id_rsa dest=~/.ssh
