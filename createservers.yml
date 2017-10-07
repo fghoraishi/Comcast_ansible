@@ -1,0 +1,51 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+      PublicSG: sg-28bc5b5a  
+      PrivateSG: sg-536d8921
+      instance_type: t2.micro
+      image: ami-8c1be5f6
+      region: us-east-1
+      companyVPC: vpc-1bbb4063
+      Publiccompanysubnet: subnet-b45d89ff
+      Privatecompanysubnet: subnet-f7588cbc
+
+
+  tasks:
+
+    - name: Provision a set of instances in Public subnet
+      ec2:
+         key_name: ibm_on_mac
+         vpc_subnet_id: "{{ Publiccompanysubnet }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         region: "{{ region }}"
+         wait: true
+         group_id: "{{ PublicSG }}" 
+         exact_count: 1
+         count_tag:
+            Name: webserver 
+         instance_tags:
+            Name: webserver
+      register: ec2pu
+    - debug: var=ec2pu
+
+    - name: Provision a set of instances in Private subnet
+      ec2:
+         key_name: ibm_on_mac
+         instance_type: "{{ instance_type }}"
+         vpc_subnet_id: "{{ Privatecompanysubnet }}"
+         image: "{{ image }}"
+         region: "{{ region }}"
+         wait: true
+         group_id: "{{ PrivateSG }}" 
+         exact_count: 1
+         count_tag:
+            Name: dbserver 
+         instance_tags:
+            Name: dbserver
+      register: ec2pr
+    - debug: var=ec2pr

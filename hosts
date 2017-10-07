@@ -1,0 +1,8 @@
+[local]
+localhost
+
+[webservers]
+webserver ansible_host=54.221.108.5 ansible_user=ec2-user
+
+[dbservers]
+dbserver ansible_host=10.0.2.140 ansible_user=ec2-user
