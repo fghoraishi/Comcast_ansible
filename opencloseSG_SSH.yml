@@ -1,0 +1,62 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+      PublicSG: sg-28bc5b5a  
+      PrivateSG: sg-536d8921
+      instance_type: t2.micro
+      image: ami-8c1be5f6
+      region: us-east-1
+      companyVPC: vpc-1bbb4063
+      Publiccompanysubnet: subnet-b45d89ff
+      Privatecompanysubnet: subnet-f7588cbc
+      security_group: ComcastWebSG 
+      security_group2: ComcastPrivateSG 
+
+      # Task that will be used to Launch/Create an EC2 Instance
+  tasks:
+
+    - name: Create a public network web security group
+      local_action:
+        module: ec2_group
+        name: "{{ security_group }}"
+        description: Security Group for webserver Servers
+        region: "{{ region }}"
+        vpc_id: "{{ companyVPC }}"
+        rules:
+#          - proto: tcp
+#            from_port: 22
+#            to_port: 22
+#            cidr_ip: 67.165.18.38/32
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 443
+            to_port: 443
+            cidr_ip: 0.0.0.0/0
+        rules_egress:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+
+    - name: Create a private network security group
+      local_action:
+        module: ec2_group
+        name: "{{ security_group2 }}"
+        description: Security Group for Private Servers
+        region: "{{ region }}"
+        vpc_id: "{{ companyVPC }}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 10.0.1.0/24
+        rules_egress:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+
+
+  
