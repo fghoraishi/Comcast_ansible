@@ -1,4 +1,11 @@
 # Sample scenario for Hello World website.
+Export keys on your system:
+
+Export AWS_ACCESS_KEY_ID
+Export AWS_SECRET_ACCESS_KEY
+
+Imported these keys into /etc/profile on my Mac so they will be available for use without sending it out via yml playbook.
+
 
 pre-Staging a Company VPC on AWS:
 
