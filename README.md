@@ -1,6 +1,6 @@
 # Sample scenario for Hello World website.
 
-re-Staging a Company VPC on AWS:
+pre-Staging a Company VPC on AWS:
 
 I created Virtual Private Cloud (VPC) for Company A using private IP CIDR 10.0.0.0/16
 I then created three subnets:
